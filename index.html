@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>New App</title>
+    <title>Sell Seed Bot</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        /* --- СВЕТЛАЯ ТЕМА --- */
         body {
             margin: 0;
             padding: 0;
-            font-family: sans-serif;
-            background-color: #121212; /* Темный фон */
-            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f4f5; /* Светло-серый фон */
+            color: #1f1f1f; /* Темно-серый текст */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -29,57 +30,224 @@
             justify-content: center;
             padding: 20px;
             box-sizing: border-box;
-            animation: fadeIn 0.5s;
+            animation: fadeIn 0.4s ease-out;
         }
         
-        #screen-1 { display: flex; } /* Показываем первый экран */
-
-        h1 { font-size: 28px; margin-bottom: 10px; }
-        p { font-size: 16px; color: #aaa; margin-bottom: 30px; }
-
-        /* Кнопка (Фиолетовая) */
-        .btn {
-            background: linear-gradient(45deg, #8e2de2, #4a00e0);
-            border: none;
-            padding: 18px 40px;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 12px;
-            cursor: pointer;
-            width: 80%;
-            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
-            transition: transform 0.1s;
-        }
-        .btn:active { transform: scale(0.95); }
+        #screen-1 { display: flex; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* --- ЭЛЕМЕНТЫ ПЕРВОГО ЭКРАНА --- */
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #000;
+        }
+
+        .sub-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        /* Поле ввода цифр */
+        input[type="number"] {
+            width: 80%;
+            padding: 15px;
+            font-size: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            text-align: center;
+            outline: none;
+            background: white;
+            transition: border-color 0.2s;
+            margin-bottom: 20px;
+        }
+        input[type="number"]:focus {
+            border-color: #007bff;
+        }
+
+        /* Отображение цены */
+        .price-display {
+            font-size: 20px;
+            font-weight: 600;
+            color: #007bff; /* Синий цвет суммы */
+            margin-bottom: 30px;
+            min-height: 24px;
+        }
+
+        /* Главная кнопка */
+        .btn-main {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 18px 60px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+            width: 80%;
+        }
+        .btn-main:active { transform: scale(0.96); }
+
+        /* --- ЭЛЕМЕНТЫ ВТОРОГО ЭКРАНА (ОПЛАТА) --- */
+        .pay-option {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 15px 20px;
+            margin: 8px 0;
+            border-radius: 12px;
+            width: 90%;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            text-align: left;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: 0.1s;
+        }
+        .pay-option:active { background: #f0f0f0; transform: scale(0.98); }
+        
+        .pay-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            width: 30px;
+            text-align: center;
+        }
+        .pay-text {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* --- ЭЛЕМЕНТЫ ТРЕТЬЕГО ЭКРАНА (УСПЕХ) --- */
+        .checkmark-circle {
+            width: 80px;
+            height: 80px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.3);
+        }
+        .checkmark-circle::after {
+            content: '✔';
+            font-size: 40px;
+            color: white;
+        }
+
+        .success-bold {
+            font-size: 18px;
+            font-weight: 800;
+            color: #000;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        
+        .success-light {
+            font-size: 14px;
+            color: #555;
+            font-weight: 400;
+            line-height: 1.5;
+            max-width: 320px;
+        }
+
     </style>
 </head>
 <body>
 
     <div id="screen-1" class="screen">
-        <h1>ЗАГОЛОВОК БОТА</h1>
-        <p>Здесь будет твое описание.<br>Мы готовы работать.</p>
-        <button class="btn" onclick="nextScreen()">НАЧАТЬ</button>
+        <img src="logo.png" alt="Logo" class="logo">
+        <h1>Продавай Seed фразы правильно!</h1>
+        
+        <div class="sub-text">Введите количество на продажу</div>
+        
+        <input type="number" id="seedInput" placeholder="0" oninput="calcPrice()">
+        
+        <div class="price-display" id="priceLabel">Сумма к выдаче: 0₽</div>
+        
+        <button class="btn-main" onclick="goToScreen(2)">ПРОДАТЬ</button>
     </div>
 
     <div id="screen-2" class="screen">
-        <h1>Второй экран</h1>
-        <p>Тут будет выбор или оплата.</p>
-        <button class="btn" onclick="tg.close()">ЗАКРЫТЬ</button>
+        <h2 style="margin-bottom: 25px; font-size: 20px; line-height: 1.4;">Выберите желаемый способ получения оплаты за ваши лицензированные Seed фразы.</h2>
+        
+        <div class="pay-option" onclick="goToScreen(3)">
+            <span class="pay-icon">💳</span>
+            <span class="pay-text">Вывод на карту</span>
+        </div>
+        
+        <div class="pay-option" onclick="goToScreen(3)">
+            <span class="pay-icon">💎</span>
+            <span class="pay-text">Криптовалюта (USDT)</span>
+        </div>
+        
+        <div class="pay-option" onclick="goToScreen(3)">
+            <span class="pay-icon">👛</span>
+            <span class="pay-text">CryptoBot</span>
+        </div>
+    </div>
+
+    <div id="screen-3" class="screen">
+        <div class="checkmark-circle"></div>
+        
+        <div class="success-bold">
+            Ваши лиц. Seed фразы приняты и после проверки бота вы получите деньги на свой счет, который указали к оплате.
+        </div>
+        
+        <div class="success-light">
+            Проверка выполняется в течении 10 минут, иногда это время увеличивается в зависимости от загрузки.
+        </div>
     </div>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        function nextScreen() {
-            document.getElementById('screen-1').style.display = 'none';
-            document.getElementById('screen-2').style.display = 'flex';
+        // Логика подсчета цены
+        function calcPrice() {
+            let input = document.getElementById('seedInput').value;
+            let label = document.getElementById('priceLabel');
+            let price = 0;
+
+            // Строгая логика по твоему ТЗ
+            if (input == 5000) {
+                price = "4 270";
+            } else if (input == 10000) {
+                price = "8 010";
+            } else if (input == 20000) {
+                price = "12 200";
+            } else if (input == 50000) {
+                price = "21 170";
+            } else {
+                // Если число другое, считаем примерно (чтобы не было 0)
+                // Например, коэффициент 0.85 от количества
+                let val = parseInt(input);
+                if (isNaN(val)) val = 0;
+                // Красиво форматируем число (пробелы между тысячами)
+                price = Math.floor(val * 0.85).toLocaleString(); 
+            }
+
+            label.innerText = `Сумма к выдаче: ${price}₽`;
+        }
+
+        // Переключение экранов
+        function goToScreen(num) {
+            document.querySelectorAll('.screen').forEach(el => el.style.display = 'none');
+            document.getElementById('screen-' + num).style.display = 'flex';
         }
     </script>
 </body>
